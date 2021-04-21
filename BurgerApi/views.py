@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 
 from .serializers import UserProfileSerializer, OrderSerializer
 from .models import UserProfile, Order
@@ -14,4 +14,15 @@ class UserProfileViewset(viewsets.ModelViewSet):
 
 class OrderViewset(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
-    queryset = Order.objects.all()
+    # queryset = Order.objects.all()
+    permission_classes = [
+        # permissions.IsAuthenticated,
+    ]
+
+    def get_queryset(self):
+        queryset = Order.objects.all()
+        id = self.request.query_params.get('id', None)
+        if id is not None:
+            queryset = queryset.filter(user__id=id)
+
+        return queryset
