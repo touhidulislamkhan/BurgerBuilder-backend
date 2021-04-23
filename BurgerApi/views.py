@@ -16,7 +16,7 @@ class OrderViewset(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     # queryset = Order.objects.all()
     permission_classes = [
-        # permissions.IsAuthenticated,
+        permissions.IsAuthenticated,
     ]
 
     def get_queryset(self):
